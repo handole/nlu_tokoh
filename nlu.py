@@ -63,35 +63,35 @@ def nluprocess(row):
                 lemma=True, part_of_speech=True))
         )).get_result()
     if response["language"] == "en":
-    filler = {
-        "syntax": {"tokens": [{"text": "", "part_of_speech": "", "location": [], "lemma":""}], "sentences": [{"text": "", "location": []}]},
-        "sentiment": {"document": {"score": 0, "label": ""}},
-        "semantic_roles": [{"subject": {"text": ""}, "sentence": "", "object": {"text": ""}, "action": {"verb": {"text": "", "tense": ""}, "text": "", "normalized": ""}}],
-        "relations": [{"type": "", "sentence": "", "score": 0, "arguments": [{"text": "", "location": [], "entities":[{"type": "", "text": ""}]}]}],
-        "keywords": [{"text": "", "sentiment": {"score": 0, "label": ""}, "relevance": 0, "emotion": {"sadness": 0, "joy": 0, "fear": 0, "disgust": 0, "anger": 0}, "count": 0}],
-        "entities": [{"type": "", "text": "", "sentiment": {"score": 0, "label": "0"}, "relevance": 0, "emotion": {"sadness": 0, "joy": 0, "fear": 0, "disgust": 0, "anger": 0}, "count": 0, "confidence": 0}],
-        "emotion": {"document": {"emotion": {"sadness": 0, "joy": 0, "fear": 0, "disgust": 0, "anger": 0}}},
-        "concepts": [{"text": "", "relevance": 0, "dbpedia_resource": ""}],
-        "categories": [{"score": 0, "label": ""}]
-    }
-    response["empty"] = []
-    if 'warnings' in response:
-    for val in response["warnings"]:
-    key = val.split(":")
-    response[key[0]] = filler[key[0]]
-    response["empty"].append(key[0])
-    del response['warnings']
-    con = json.dumps(response)
-    con = con.replace("&apos;", " ")
-    con = con.replace("'", "&apos;")
-    sq = "UPDATE userprofiles SET nlu_translate='{}', status_nlu=TRUE WHERE id={}".format(
-        con, id)
-    mycursor.execute(sq)
-    mess += "[DONE] ~> "
-    return con
+        filler = {
+            "syntax": {"tokens": [{"text": "", "part_of_speech": "", "location": [], "lemma":""}], "sentences": [{"text": "", "location": []}]},
+            "sentiment": {"document": {"score": 0, "label": ""}},
+            "semantic_roles": [{"subject": {"text": ""}, "sentence": "", "object": {"text": ""}, "action": {"verb": {"text": "", "tense": ""}, "text": "", "normalized": ""}}],
+            "relations": [{"type": "", "sentence": "", "score": 0, "arguments": [{"text": "", "location": [], "entities":[{"type": "", "text": ""}]}]}],
+            "keywords": [{"text": "", "sentiment": {"score": 0, "label": ""}, "relevance": 0, "emotion": {"sadness": 0, "joy": 0, "fear": 0, "disgust": 0, "anger": 0}, "count": 0}],
+            "entities": [{"type": "", "text": "", "sentiment": {"score": 0, "label": "0"}, "relevance": 0, "emotion": {"sadness": 0, "joy": 0, "fear": 0, "disgust": 0, "anger": 0}, "count": 0, "confidence": 0}],
+            "emotion": {"document": {"emotion": {"sadness": 0, "joy": 0, "fear": 0, "disgust": 0, "anger": 0}}},
+            "concepts": [{"text": "", "relevance": 0, "dbpedia_resource": ""}],
+            "categories": [{"score": 0, "label": ""}]
+        }
+        response["empty"] = []
+        if 'warnings' in response:
+            for val in response["warnings"]:
+                key = val.split(":")
+                response[key[0]] = filler[key[0]]
+                response["empty"].append(key[0])
+            del response['warnings']
+        con = json.dumps(response)
+        con = con.replace("&apos;", " ")
+        con = con.replace("'", "&apos;")
+        sq = "UPDATE userprofiles SET nlu_translate='{}', status_nlu=TRUE WHERE id={}".format(
+            con, id)
+        mycursor.execute(sq)
+        mess += "[DONE] ~> "
+        return con
     else:
-    mess += "[FAIL] ~> "
-    return "0"
+        mess += "[FAIL] ~> "
+        return "0"
 
 
 if __name__ == "__main__":
@@ -102,7 +102,7 @@ if __name__ == "__main__":
             f = open(dir + "/flag.txt", "w")
             f.write("wowowowoooww! i have deleted!")
             f.close()
-            sql = "SELECT * FROM userprofiles WHERE nlu_status=Null ORDER BY id ASC limit 1"
+            sql = "SELECT * FROM userprofiles WHERE nlu_status=0 ORDER BY id ASC limit 1"
             mycursor.execute(sql)
             result = mycursor.fetchall()
             while row is not None:
